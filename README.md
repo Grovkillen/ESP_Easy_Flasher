@@ -16,7 +16,7 @@ Post flash features
 EXTRA INFORMATION
 ------------
 * **Agency FB** is the font used within the app, if not present the app will kindly ask you to drag-and-drop the two font files found in the APP_DATA folder to the FONTS folder (automatically opened).
-* **Admin rights **are needed to be able to get COM port names (driver names).
+* **Admin rights ** are needed to be able to get COM port names (driver names).
 * **BIN files** need to be placed in the BIN folder (might change in the future but I plan to automatically download new releases from GitHub)
 * **Log files** for each flash will be placed in the Log folder.
 
