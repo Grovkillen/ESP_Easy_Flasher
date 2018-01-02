@@ -13,7 +13,7 @@ Flash features
 Post flash features
 ------------
 * NO NEED FOR AP MODE setup: set Unit name, number, admin password, Wifi settings, IP, right after flash
-* Activate and upload rules (NOT YET IMPLEMENTED)
+* Activate and upload rules
 
 EXTRA INFORMATION
 ------------
