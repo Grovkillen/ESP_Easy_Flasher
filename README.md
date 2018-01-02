@@ -17,6 +17,7 @@ Post flash features
 
 EXTRA INFORMATION
 ------------
+* **ONLY WINDOWS** is supported (Windows 10, Windows 8.1, Windows 8, Windows 7) since it rely on PowerShell v2+ to serial communicate with the units.
 * **Agency FB** is the font used within the app, if not present the app will kindly ask you to drag-and-drop the two font files found in the APP_DATA folder to the FONTS folder (automatically opened).
 * **Admin rights** are needed to be able to get COM port names (driver names).
 * **BIN files** need to be placed in the BIN folder (might change in the future but I plan to automatically download new releases from GitHub)
