@@ -10,7 +10,7 @@ Flash features
 * Use maximum baud rate if wanted
 * Use forced DOUT if wanted
 
-Post flash features
+Post flash features (for ESP Easy 2.0.0+)
 ------------
 * NO NEED FOR AP MODE setup: set Unit name, number, admin password, Wifi settings, IP, right after flash
 * Activate and upload rules
