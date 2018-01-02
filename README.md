@@ -1,4 +1,4 @@
-[[https://github.com/Grovkillen/ESP_Easy_Flasher/blob/master/Screenshot.png|alt=ESP Easy Flasher GUI]]
+![ESP Easy Flasher GUI](Screenshot.png)
 
 Intro
 ------------
