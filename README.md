@@ -13,7 +13,7 @@ Flash features
 Post flash features (for ESP Easy 2.0.0+)
 ------------
 * NO NEED FOR AP MODE setup: set Unit name, number, admin password, Wifi settings, IP, right after flash
-* Activate and upload rules
+* Activate and upload rules (DEPENDING ON THE CONNECTION TO THE UNIT THIS MIGHT TAKE SOME MINUTES DUE TO LATENCY)
 
 EXTRA INFORMATION
 ------------
