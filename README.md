@@ -22,5 +22,6 @@ EXTRA INFORMATION
 * **Admin rights** are needed to be able to get COM port names (driver names).
 * **BIN files** need to be placed in the BIN folder (might change in the future but I plan to automatically download new releases from GitHub)
 * **Log files** for each flash will be placed in the Log folder.
+* **Debug log** is created by: save settings and open the ini file, change debug level 0 to 1, restart app and a bug log file will appear in the same place as the exe. [Debug logs are sent here](https://dbinbox.com/harkrank).
 
 I plan add more features on a weekly basis. Thanks for all the feedback!
