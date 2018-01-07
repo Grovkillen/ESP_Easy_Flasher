@@ -27,6 +27,7 @@ EXTRA INFORMATION
 * **Agency FB** is the font used within the app, if not present the app will kindly ask you to drag-and-drop the two font files found in the APP_DATA folder to the FONTS folder (automatically opened).
 * **Admin rights** are needed to be able to get COM port names (driver names).
 * **BIN files** need to be placed in the BIN folder (might change in the future but I plan to automatically download new releases from GitHub)
+* **Rules (txt) files** need to be placed in the Rules folder.
 * **Log files** for each flash will be placed in the Log folder.
 * **Debug log** is created by: save settings and open the ini file, change debug level 0 to 1, restart app and a bug log file will appear in the same place as the exe. [Debug logs are sent here](https://dbinbox.com/harkrank), but please add information (email, name etc.) in the text file prior to upload!
 
