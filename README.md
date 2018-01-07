@@ -7,18 +7,18 @@ Intro
 Flash features
 ------------
 ```diff
-+ * Flash ESP8266 (+ESP8285) using embedded ESPTOOL.exe [0.4.12]
-+ * Use maximum baud rate if wanted
-+ * Use forced DOUT if wanted
-- * Erase flash (NOT IMPLEMENTED)
-- * Scan for ESP model + size of mem (NOT IMPLEMENTED)
++ Flash ESP8266 (+ESP8285) using embedded ESPTOOL.exe [0.4.12]
++ Use maximum baud rate if wanted
++ Use forced DOUT if wanted
+- Erase flash (NOT IMPLEMENTED)
+- Scan for ESP model + size of mem (NOT IMPLEMENTED)
 ```
 
 Post flash features (for ESP Easy 2.0.0+)
 ------------
 ```diff
-+ * NO NEED FOR AP MODE setup: set Unit name, number, admin password, Wifi settings, IP, right after flash
-+ * Activate and upload rules (DEPENDING ON THE CONNECTION TO THE UNIT THIS MIGHT TAKE SOME MINUTES DUE TO LATENCY)
++ NO NEED FOR AP MODE setup: set Unit name, number, admin password, Wifi settings, IP, right after flash
++ Activate and upload rules (DEPENDING ON THE CONNECTION TO THE UNIT THIS MIGHT TAKE SOME MINUTES DUE TO LATENCY)
 ```
 
 EXTRA INFORMATION
