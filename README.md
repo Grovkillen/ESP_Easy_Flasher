@@ -30,6 +30,7 @@ EXTRA INFORMATION
 * **Rules (txt) files** need to be placed in the Rules folder.
 * **Log files** for each flash will be placed in the Log folder.
 * **Debug log** is created by: save settings and open the ini file, change debug level 0 to 1, restart app and a bug log file will appear in the same place as the exe. [Debug logs are sent here](https://dbinbox.com/harkrank), but please add information (email, name etc.) in the text file prior to upload!
+* **ERROR handling** if the flash tool is telling you that an error has occured, a standard test is to simply reset the unit (if the unit has a switch for this, use that one, else disconnect the cable) and then try again. Flashing over serial is not an exact science.
 
 I plan add more features on a weekly basis. Thanks for all the feedback!
 
