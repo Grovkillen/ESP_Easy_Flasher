@@ -1,10 +1,13 @@
+ESP Easy Flasher
+------------
+
 ![ESP Easy Flasher GUI](Screenshot.png)
 
-Intro
+INTRO
 ------------
 **ESP Easy Flasher** is a wrapper for the great [ESPTOOL.exe](https://github.com/igrr/esptool-ck/blob/master/README.md) and Power Shell to be able to easily flash and program ESP8266 units with the firmware [ESP Easy](https://www.letscontrolit.com/wiki/index.php/ESPEasy). All needed files are included in the EXE file, just download it and place it where you want it. It will extract needed file structure and missing files automatically. The idea behind the app is to make the flashing and setup of ESP Easy FW as stream lined as possible. It's still a very early stage but should hopefully be functional for most use-cases.
 
-Flash features
+FLASH FEATURES
 ------------
 ```diff
 + Flash ESP8266 (+ESP8285) using embedded ESPTOOL.exe [0.4.12]
@@ -14,7 +17,7 @@ Flash features
 - Scan for ESP model + size of mem (NOT IMPLEMENTED)
 ```
 
-Post flash features (for ESP Easy 2.0.0+)
+POST FLASH FEATURES (for ESP Easy 2.0.0+)
 ------------
 ```diff
 + NO NEED FOR AP MODE setup: set Unit name, number, admin password, Wifi settings, IP, right after flash
