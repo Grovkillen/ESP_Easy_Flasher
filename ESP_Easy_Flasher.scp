@@ -1,30 +1,18 @@
-﻿// COMPILE_OPTS|C:\Users\jimwes\Desktop\ESP Easy Flasher.exe|C:\Users\jimwes\Dropbox\Diverse\ESP-projekt\ESPeasierFlasher\ICON.ico|CONSOLE=0|INCLUDES=1| /NOSYSTRAY|RUNTIMES=1|BMPS=1
+// COMPILE_OPTS|C:\Users\jimwes\Desktop\ESP Easy Flasher.exe|C:\Users\jimwes\Dropbox\Diverse\ESP-projekt\ESP_Easy_Flasher\ICON.ico|CONSOLE=0|INCLUDES=1| /NOSYSTRAY|RUNTIMES=1|BMPS=1
 
 //Global variables (version is MAYOR.MINOR.MINIMAL)
-Let>VERSION=0.00.019
+Let>VERSION=0.00.020
 Let>APP_TITLE=ESP Easy Flasher (%VERSION%)
+
 //Start of program
 Let>FIRST_START=1
 GoSub>GET_THE_DRIVE_LETTER
 GoSub>DIALOG_MAIN
+GoSub>DIALOG_HALT
 GoSub>STARTUP_SUBS
 GoSub>POPULATE_FILE_LISTS
 GoSub>SET_DEFAULT_DIALOG_SETTINGS
-SetDialogProperty>Dialog1,,Caption,APP_TITLE
-SetDialogProperty>Dialog1,BUTTON_BROWSE,Caption,Open%CRLF%folder
-GoSub>ENABLE_DISABLE_IP_INPUT
-AddDialogHandler>Dialog1,,OnClose,EXIT_APP
-AddDialogHandler>Dialog1,BUTTON_REFRESH_COM,OnClick,POPULATE_COM_LIST
-AddDialogHandler>Dialog1,CHECK_BOX_ACTIVE,OnClick,SWAP_COM_LIST
-AddDialogHandler>Dialog1,BUTTON_WIKI,OnClick,OPEN_WIKI_PAGE
-AddDialogHandler>Dialog1,BUTTON_OPEN_RULES1,OnClick,OPEN_RULES_FILE(1)
-AddDialogHandler>Dialog1,BUTTON_OPEN_RULES2,OnClick,OPEN_RULES_FILE(2)
-AddDialogHandler>Dialog1,BUTTON_OPEN_RULES3,OnClick,OPEN_RULES_FILE(3)
-AddDialogHandler>Dialog1,BUTTON_OPEN_RULES4,OnClick,OPEN_RULES_FILE(4)
-AddDialogHandler>Dialog1,BUTTON_FLASH,OnClick,START_FLASHING_MCU
-AddDialogHandler>Dialog1,BUTTON_SAVE_DEFAULT_SETTINGS,OnClick,SAVE_SETTINGS_FILE
-AddDialogHandler>Dialog1,BUTTON_BROWSE,OnClick,OPEN_BIN_FOLDER
-AddDialogHandler>Dialog1,CHECK_BOX_FIXED_IP,OnClick,ENABLE_DISABLE_IP_INPUT
+GoSub>ADD_DIALOG_HANDLERS
 Show>Dialog1
 GoSub>POPULATE_COM_LIST
 
@@ -87,15 +75,35 @@ SRT>STARTUP_SUBS
  GoSub>EXTERNAL_SCRIPT_FILES
   //Install missing fonts if needed
   GoSub>LOOK_IF_FONT_IS_THERE_IF_NOT_INSTALL
- //Scan for com ports
- GoSub>COM_SCANNER_LOOP
 END>STARTUP_SUBS
+
+//Add dialog handlers...
+SRT>ADD_DIALOG_HANDLERS
+  SetDialogProperty>Dialog1,,Caption,APP_TITLE
+  SetDialogProperty>Dialog1,BUTTON_BROWSE,Caption,Open%CRLF%folder
+  GoSub>ENABLE_DISABLE_IP_INPUT
+  AddDialogHandler>Dialog1,,OnClose,EXIT_APP
+  AddDialogHandler>Dialog1,BUTTON_REFRESH_COM,OnClick,POPULATE_COM_LIST
+  AddDialogHandler>Dialog1,CHECK_BOX_ACTIVE,OnClick,SWAP_COM_LIST
+  AddDialogHandler>Dialog1,BUTTON_WIKI,OnClick,OPEN_WIKI_PAGE
+  AddDialogHandler>Dialog1,BUTTON_OPEN_RULES1,OnClick,OPEN_RULES_FILE(1)
+  AddDialogHandler>Dialog1,BUTTON_OPEN_RULES2,OnClick,OPEN_RULES_FILE(2)
+  AddDialogHandler>Dialog1,BUTTON_OPEN_RULES3,OnClick,OPEN_RULES_FILE(3)
+  AddDialogHandler>Dialog1,BUTTON_OPEN_RULES4,OnClick,OPEN_RULES_FILE(4)
+  AddDialogHandler>Dialog1,BUTTON_FLASH,OnClick,START_FLASHING_MCU
+  AddDialogHandler>Dialog1,BUTTON_SAVE_DEFAULT_SETTINGS,OnClick,SAVE_SETTINGS_FILE
+  AddDialogHandler>Dialog1,BUTTON_BROWSE,OnClick,OPEN_BIN_FOLDER
+  AddDialogHandler>Dialog1,CHECK_BOX_FIXED_IP,OnClick,ENABLE_DISABLE_IP_INPUT
+  AddDialogHandler>Dialog2,BUTTON_HALT_PROCEED,onClick,SHOW_HALT_DIALOG(PROCEED)
+  AddDialogHandler>Dialog2,BUTTON_HALT_CANCEL,onClick,SHOW_HALT_DIALOG(CANCEL)
+  SetDialogProperty>Dialog2,BUTTON_HALT_PROCEED,Caption,Press this button%CRLF%once you have%CRLF%reset/rebooted%CRLF%the unit.
+END>ADD_DIALOG_HANDLERS
 
 //The dialog
 SRT>DIALOG_MAIN
 Dialog>Dialog1
 object Dialog1: TForm
-  Left = -1674
+  Left = -1387
   Top = 113
   HelpContext = 5000
   BorderIcons = [biSystemMenu]
@@ -492,6 +500,17 @@ object Dialog1: TForm
       DoBrowse = False
       BrowseStyle = fbOpen
     end
+    object CHECK_BOX_HALT_APP: TCheckBox
+      Left = 219
+      Top = 8
+      Width = 230
+      Height = 28
+      Hint = 
+        'Check this if the ESP unit is not responding to serial programmi' +
+        'ng, you will need to reset the unit after flash is completed.'
+      Caption = 'Halt app before post flash'
+      TabOrder = 21
+    end
   end
   object FLASH_PANEL: TPanel
     Left = 2
@@ -774,6 +793,70 @@ object Dialog1: TForm
 end
 EndDialog>Dialog1
 END>DIALOG_MAIN
+
+SRT>DIALOG_HALT
+Dialog>Dialog2
+object Dialog2: TForm
+  Left = -1258
+  Top = 592
+  HelpContext = 5000
+  BorderIcons = []
+  BorderStyle = bsSingle
+  Caption = 'Please select...'
+  ClientHeight = 205
+  ClientWidth = 264
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -14
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = True
+  Position = poScreenCenter
+  ShowHint = True
+  OnTaskBar = False
+  PixelsPerInch = 120
+  TextHeight = 16
+  object BUTTON_HALT_PROCEED: tMSButton
+    Left = 6
+    Top = 8
+    Width = 251
+    Height = 153
+    Caption = 'Press this button once you have reset/rebooted the unit'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlack
+    Font.Height = -27
+    Font.Name = 'Agency FB'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 0
+    DoBrowse = False
+    BrowseStyle = fbOpen
+  end
+  object BUTTON_HALT_CANCEL: tMSButton
+    Left = 5
+    Top = 163
+    Width = 252
+    Height = 38
+    Caption = 'Press this button to cancel'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clMaroon
+    Font.Height = -27
+    Font.Name = 'Agency FB'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 1
+    DoBrowse = False
+    BrowseStyle = fbOpen
+  end
+end
+EndDialog>Dialog2
+END>DIALOG_HALT
+
+SRT>SHOW_HALT_DIALOG
+  CloseDialog>Dialog2
+  Let>WHAT_SHOULD_THE_APP_DO=SHOW_HALT_DIALOG_Var_1
+END>SHOW_HALT_DIALOG
 
 //Get path drive letter
 SRT>GET_THE_DRIVE_LETTER
@@ -1082,6 +1165,7 @@ END>ENVIRONMENT_SCAN
 //Get all the settings from the dialog1
 SRT>GET_DIALOG_DATA
   GetDialogProperty>Dialog1,CHECK_BOX_POST_FLASH,Checked,POST_FLASH
+  GetDialogProperty>Dialog1,CHECK_BOX_HALT_APP,Checked,POST_FLASH_HALT
   GetDialogProperty>Dialog1,CHECK_BOX_ACTIVE,Checked,ONLY_ACTIVE_COM
   GetDialogProperty>Dialog1,INPUT_UNIT_NAME,Text,UNIT_NAME
   GetDialogProperty>Dialog1,INPUT_UNIT_NUMBER,Text,UNIT_NUMBER
@@ -1256,7 +1340,25 @@ SRT>START_FLASHING_MCU
       GetDialogProperty>Dialog1,LOG_MEMO,Text,LOG_MEMO_TEXT
       SetDialogProperty>Dialog1,LOG_MEMO,Text,Flashing done (%ELAPSED_TIME%s).%CRLF%%LOG_MEMO_TEXT%
       If>POST_FLASH=True
-        GoSub>POST_FLASH_ACTIVITIES
+        GetDialogProperty>Dialog1,CHECK_BOX_HALT_APP,Checked,IS_CHECK_BOX_HALT_APP
+        If>IS_CHECK_BOX_HALT_APP=True
+          GoSub>GET_TIME_AND_DATE
+          WriteLn>%SCRIPT_DIR%\Log\%LOG_FILE_NAME%,,[%DATE% %TIME%] Waiting for user input (reset the unit).
+          GetDialogProperty>Dialog1,LOG_MEMO,Text,LOG_MEMO_TEXT
+          SetDialogProperty>Dialog1,LOG_MEMO,Text,Waiting for user input (reset the unit).%CRLF%%LOG_MEMO_TEXT%
+          Show>Dialog2,r
+          If>WHAT_SHOULD_THE_APP_DO=CANCEL
+            //Skipping
+              GoSub>GET_TIME_AND_DATE
+              WriteLn>%SCRIPT_DIR%\Log\%LOG_FILE_NAME%,,[%DATE% %TIME%] Post flash aborted by user.
+              GetDialogProperty>Dialog1,LOG_MEMO,Text,LOG_MEMO_TEXT
+              SetDialogProperty>Dialog1,LOG_MEMO,Text,Post flash aborted by user.%CRLF%%LOG_MEMO_TEXT%
+          Else>
+            GoSub>GET_TIME_AND_DATE
+            WriteLn>%SCRIPT_DIR%\Log\%LOG_FILE_NAME%,,[%DATE% %TIME%] Proceeding...
+            GoSub>POST_FLASH_ACTIVITIES
+          Endif>
+        Endif>
       Endif>
       GoSub>GET_TIME_AND_DATE
       WriteLn>%SCRIPT_DIR%\Log\%LOG_FILE_NAME%,,############################
@@ -1403,6 +1505,7 @@ SRT>SET_DEFAULT_DIALOG_SETTINGS
     //Do nothing
   Else>
     SetDialogProperty>Dialog1,CHECK_BOX_POST_FLASH,Checked,%POST_FLASH%
+    SetDialogProperty>Dialog1,CHECK_BOX_HALT_APP,Checked,%POST_FLASH_HALT%
     SetDialogProperty>Dialog1,CHECK_BOX_ACTIVE,Checked,%ONLY_ACTIVE_COM%
     SetDialogProperty>Dialog1,INPUT_UNIT_NAME,Text,%UNIT_NAME%
     SetDialogProperty>Dialog1,INPUT_UNIT_NUMBER,Text,%UNIT_NUMBER%
@@ -1441,6 +1544,7 @@ SRT>SAVE_SETTINGS_FILE
   EditIniFile>%INI_FILE_PATH%\%INI_FILE%,Main settings,Only active ports,%ONLY_ACTIVE_COM%
   EditIniFile>%INI_FILE_PATH%\%INI_FILE%,Main settings,BIN file list number,%BIN_FILE_LIST_NUMBER%
   EditIniFile>%INI_FILE_PATH%\%INI_FILE%,Post flash settings,Action wanted,%POST_FLASH%
+  EditIniFile>%INI_FILE_PATH%\%INI_FILE%,Post flash settings,Halt before serial,%POST_FLASH_HALT%
   EditIniFile>%INI_FILE_PATH%\%INI_FILE%,Post flash settings,Unit name,%UNIT_NAME%
   EditIniFile>%INI_FILE_PATH%\%INI_FILE%,Post flash settings,Unit number,%UNIT_NUMBER%
   EditIniFile>%INI_FILE_PATH%\%INI_FILE%,Post flash settings,Admin password,%UNIT_ADMIN_PASSWORD%
@@ -1460,6 +1564,8 @@ SRT>SAVE_SETTINGS_FILE
   EditIniFile>%INI_FILE_PATH%\%INI_FILE%,Flash settings,Baud rate list number,%BAUD_RATE_LIST_NUMBER%
   EditIniFile>%INI_FILE_PATH%\%INI_FILE%,Flash settings,Force DOUT,%FORCE_DOUT%
   EditIniFile>%INI_FILE_PATH%\%INI_FILE%,Debug settings,Debug level,%DEBUG_LEVEL%
+    GetDialogProperty>Dialog1,LOG_MEMO,Text,LOG_MEMO_TEXT
+    SetDialogProperty>Dialog1,LOG_MEMO,Text,Default.ini saved in "Settings" folder.%CRLF%%LOG_MEMO_TEXT%
 END>SAVE_SETTINGS_FILE
 
 //In order to restore settings we need to read the INI file 
@@ -1472,6 +1578,7 @@ SRT>READ_SETTINGS_FILE
     ReadIniFile>%INI_FILE_PATH%\%INI_FILE%,Main settings,Only active ports,ONLY_ACTIVE_COM
     ReadIniFile>%INI_FILE_PATH%\%INI_FILE%,Main settings,BIN file list number,BIN_FILE_LIST_NUMBER
     ReadIniFile>%INI_FILE_PATH%\%INI_FILE%,Post flash settings,Action wanted,POST_FLASH
+    ReadIniFile>%INI_FILE_PATH%\%INI_FILE%,Post flash settings,Halt before serial,POST_FLASH_HALT
     ReadIniFile>%INI_FILE_PATH%\%INI_FILE%,Post flash settings,Unit name,UNIT_NAME
     ReadIniFile>%INI_FILE_PATH%\%INI_FILE%,Post flash settings,Unit number,UNIT_NUMBER
     ReadIniFile>%INI_FILE_PATH%\%INI_FILE%,Post flash settings,Admin password,UNIT_ADMIN_PASSWORD
@@ -1631,7 +1738,7 @@ SRT>PING_TARGET_UNIT
     Endif>
     Let>PING_TEST_METHOD=0
       If>PING_TEST_METHOD=0
-        Let>RUN_STRING=powershell "test-connection -ComputerName %IP_NUMBER_FOUND_1% -count 5 -ErrorAction SilentlyContinue | Format-List | tee '%SCRIPT_DIR%\APP_DATA\PING.txt'"
+        Let>RUN_STRING=powershell "test-connection -ComputerName %IP_NUMBER_FOUND_1% -count 2 -ErrorAction SilentlyContinue | Format-List | tee '%SCRIPT_DIR%\APP_DATA\PING.txt'"
         Let>REGEX_PATTERN=(ResponseTime[ ]*:[ ]*)[0123456789]+
         Let>REGEX_PATTERN_2=(ResponseTime[ ]*:[ ]*)
       Else>
