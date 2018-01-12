@@ -1,7 +1,7 @@
 // COMPILE_OPTS|C:\Users\jimwes\Desktop\ESP Easy Flasher.exe|C:\Users\jimwes\Dropbox\Diverse\ESP-projekt\ESP_Easy_Flasher\ICON.ico|CONSOLE=0|INCLUDES=1| /NOSYSTRAY|RUNTIMES=1|BMPS=1
 
 //Global variables (version is MAYOR.MINOR.MINIMAL)
-Let>VERSION=0.00.020
+Let>VERSION=0.00.021
 Let>APP_TITLE=ESP Easy Flasher (%VERSION%)
 
 //Start of program
@@ -94,6 +94,7 @@ SRT>ADD_DIALOG_HANDLERS
   AddDialogHandler>Dialog1,BUTTON_SAVE_DEFAULT_SETTINGS,OnClick,SAVE_SETTINGS_FILE
   AddDialogHandler>Dialog1,BUTTON_BROWSE,OnClick,OPEN_BIN_FOLDER
   AddDialogHandler>Dialog1,CHECK_BOX_FIXED_IP,OnClick,ENABLE_DISABLE_IP_INPUT
+  AddDialogHandler>Dialog1,CHECK_BOX_POST_FLASH,OnClick,ENABLE_DISABLE_HALT_APP
   AddDialogHandler>Dialog2,BUTTON_HALT_PROCEED,onClick,SHOW_HALT_DIALOG(PROCEED)
   AddDialogHandler>Dialog2,BUTTON_HALT_CANCEL,onClick,SHOW_HALT_DIALOG(CANCEL)
   SetDialogProperty>Dialog2,BUTTON_HALT_PROCEED,Caption,Press this button%CRLF%once you have%CRLF%reset/rebooted%CRLF%the unit.
@@ -1242,6 +1243,7 @@ END>GET_LIST_ITEM
 
 //Flash the MCU, writing to log file
 SRT>START_FLASHING_MCU
+  SetDialogProperty>Dialog1,LOG_MEMO,Text,
   GoSub>GET_DIALOG_DATA
   //See if any BIN file is selected
   If>BIN_FILE_LIST_NUMBER=0
@@ -1310,6 +1312,7 @@ SRT>START_FLASHING_MCU
     SetDialogProperty>Dialog1,LOG_MEMO,Text,Start flashing on COM%COM_PORT_NUMBER% (This might take a minute or two...)%CRLF%%LOG_MEMO_TEXT%
     //Start a timer to see how long the flashing is taking
     Timer>TIMER_START
+    Let>RP_ADMIN=1
     Let>RP_WINDOWMODE=%DEBUG_LEVEL%
     Let>RP_WAIT=1
     If>FORCE_DOUT=True
@@ -1340,6 +1343,7 @@ SRT>START_FLASHING_MCU
       GetDialogProperty>Dialog1,LOG_MEMO,Text,LOG_MEMO_TEXT
       SetDialogProperty>Dialog1,LOG_MEMO,Text,Flashing done (%ELAPSED_TIME%s).%CRLF%%LOG_MEMO_TEXT%
       If>POST_FLASH=True
+        Let>PROCEED_OR_NOT=1
         GetDialogProperty>Dialog1,CHECK_BOX_HALT_APP,Checked,IS_CHECK_BOX_HALT_APP
         If>IS_CHECK_BOX_HALT_APP=True
           GoSub>GET_TIME_AND_DATE
@@ -1349,6 +1353,7 @@ SRT>START_FLASHING_MCU
           Show>Dialog2,r
           If>WHAT_SHOULD_THE_APP_DO=CANCEL
             //Skipping
+              Let>PROCEED_OR_NOT=0
               GoSub>GET_TIME_AND_DATE
               WriteLn>%SCRIPT_DIR%\Log\%LOG_FILE_NAME%,,[%DATE% %TIME%] Post flash aborted by user.
               GetDialogProperty>Dialog1,LOG_MEMO,Text,LOG_MEMO_TEXT
@@ -1356,8 +1361,10 @@ SRT>START_FLASHING_MCU
           Else>
             GoSub>GET_TIME_AND_DATE
             WriteLn>%SCRIPT_DIR%\Log\%LOG_FILE_NAME%,,[%DATE% %TIME%] Proceeding...
-            GoSub>POST_FLASH_ACTIVITIES
           Endif>
+        Endif>
+        If>PROCEED_OR_NOT=1
+          GoSub>POST_FLASH_ACTIVITIES
         Endif>
       Endif>
       GoSub>GET_TIME_AND_DATE
@@ -1528,6 +1535,7 @@ SRT>SET_DEFAULT_DIALOG_SETTINGS
     SetDialogProperty>Dialog1,PICK_RULES3,ItemIndex,%RULES_PAGE_3_LIST_NUMBER%
     SetDialogProperty>Dialog1,PICK_RULES4,ItemIndex,%RULES_PAGE_4_LIST_NUMBER%
   Endif>
+  GoSub>ENABLE_DISABLE_HALT_APP
 END>SET_DEFAULT_DIALOG_SETTINGS
 
 //What will happen if the save button is pressed, get all settings and store them in the INI file (Settings folder)
@@ -1627,6 +1635,7 @@ SRT>WRITE_USING_SERIAL_COMMUNICATION
   WriteLn>%SCRIPT_DIR%\APP_DATA\WRITE.ps1,,%WRITE_TO_COM_PORT%
   //Run the power shell script
   Let>RUN_STRING=powershell -ExecutionPolicy bypass -NoProfile -Command "%SCRIPT_DIR%\APP_DATA\WRITE.ps1"
+  Let>RP_ADMIN=1
   Let>RP_WAIT=1
   Run>%RUN_STRING%
   Wait>1
@@ -1703,6 +1712,7 @@ SRT>LISTEN_TO_SERIAL_FOR_A_WHILE
   //Run the power shell script
   Let>RUN_STRING=powershell -ExecutionPolicy bypass -NoProfile -Command "%SCRIPT_DIR%\APP_DATA\LISTEN.ps1" | tee "%SCRIPT_DIR%\APP_DATA\SERIAL_LISTEN.txt"
   Let>RP_WAIT=1
+  Let>RP_ADMIN=1
   Run>%RUN_STRING%
   IfFileExists>%SCRIPT_DIR%\APP_DATA\LISTEN.ps1
     DeleteFile>%SCRIPT_DIR%\APP_DATA\LISTEN.ps1
@@ -1744,6 +1754,7 @@ SRT>PING_TARGET_UNIT
       Else>
         //In case I need to find a "better" ping app...
       Endif>
+    Let>RP_ADMIN=1
     Let>RP_WAIT=1
     Run>%RUN_STRING%
     Wait>0.5
@@ -1893,6 +1904,16 @@ SRT>ENABLE_DISABLE_IP_INPUT
     SetDialogProperty>Dialog1,INPUT_IP4,Enabled,True
   Endif>
 END>ENABLE_DISABLE_IP_INPUT
+
+//Just to indicate that the IP is not sent... grayed out
+SRT>ENABLE_DISABLE_HALT_APP
+  GetDialogProperty>Dialog1,CHECK_BOX_POST_FLASH,Checked,IS_THE_HALT_APP_CHECKED
+  If>IS_THE_HALT_APP_CHECKED=False
+    SetDialogProperty>Dialog1,CHECK_BOX_HALT_APP,Enabled,False
+  Else>
+    SetDialogProperty>Dialog1,CHECK_BOX_HALT_APP,Enabled,True
+  Endif>
+END>ENABLE_DISABLE_HALT_APP
 
 //Included files below this point....
 
