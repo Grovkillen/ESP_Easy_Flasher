@@ -49,5 +49,5 @@ LEGEND
 
 DISCLAIMER
 ------------
-* **GUI** is messed up on Windows 10 (at least) compared to Windows 7 (which I compile the exe on). I will try to fix this in future releases, BETA, but as of now I focus on the core function. The main problem comes from W10 willingness of showing the interface with zoom activated. Reverting it to 100% fixes some of the messiness.
+* **GUI** is sometimes acting weird. You can fix this by saving the settings and in the Default.ini change the "Pixels Per Inch" to something more or less than the current value. Re-launch the app and it will show up bigger/smaller than before.
 
