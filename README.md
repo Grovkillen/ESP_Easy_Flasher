@@ -14,6 +14,7 @@ FLASH FEATURES
 + Use maximum baud rate if wanted
 + Use forced DOUT if wanted
 + Monitor serial (COM) port using embedded plink.exe
++ Download new versions from GitHub
 - Erase flash (NOT IMPLEMENTED)
 - Scan for ESP model + size of mem (NOT IMPLEMENTED)
 ```
