@@ -50,5 +50,5 @@ LEGEND
 
 DISCLAIMER
 ------------
-* **GUI** is sometimes acting weird. You can fix this by saving the settings and in the Default.ini change the "Pixels Per Inch" to something more or less than the current value. Re-launch the app and it will show up bigger/smaller than before.
+* **GUI** is sometimes acting weird. You can fix this by saving (button or ALT + S) the settings and in the Default.ini change the "Pixels Per Inch" to something more or less than the current value. Re-launch the app and it will show up bigger/smaller than before.
 
